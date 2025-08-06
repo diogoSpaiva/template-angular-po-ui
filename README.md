@@ -1,59 +1,149 @@
-# TemplateAngularPoUi
+# Projeto Angular com PO‑UI
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.1.
+## 📌 Pré‑requisitos
 
-## Development server
+- Node.js **versão 18.19.x ou superior**
+- Angular CLI (versão compatível com o projeto)
+- Gerenciador de pacotes: npm ou yarn
 
-To start a local development server, run:
+---
+
+## 1. Iniciar o projeto Angular
 
 ```bash
+# (Opcional) Verificar versão do Node
+node --version
+
+# Instalar Angular CLI globalmente, se ainda não tiver
+npm install -g @angular/cli
+
+# Criar novo projeto Angular (ex: nome “my‑app”)
+ng new my-app
+# Responder “Yes” para roteamento; escolher CSS ou SCSS conforme desejo
+
+cd my-app
+```
+
+---
+
+## 2. Instalar e configurar o PO‑UI
+
+```bash
+# Instala os componentes principais do PO‑UI
+ng add @po-ui/ng-components
+
+# Responder “Yes” para criação do menu lateral etc.
+
+# (Opcional) Instalar templates padrões
+ng add @po-ui/ng-templates
+```
+
+---
+
+## 3. Criar páginas base usando templates PO‑UI
+
+```bash
+# Gerar página de lista dinâmica
+ng generate @po-ui/ng-templates:po-page-dynamic-table --name TablePage
+
+# Gerar página de edição dinâmica
+ng generate @po-ui/ng-templates:po-page-dynamic-edit --name EditPage
+```
+
+---
+
+## 4. Configurar roteamento
+
+```ts
+import { TablePageComponent } from './table-page/table-page.component';
+import { EditPageComponent } from './edit-page/edit-page.component';
+
+const routes: Routes = [
+  { path: 'table', component: TablePageComponent },
+  { path: 'new', component: EditPageComponent },
+  { path: 'edit/:id', component: EditPageComponent },
+  { path: '', redirectTo: 'table', pathMatch: 'full' }
+];
+```
+
+---
+
+## 5. Ajustar componentes e serviços
+
+### TablePageComponent
+
+```ts
+import { PoPageDynamicTableActions, PoPageDynamicTableField } from '@po-ui/ng-templates';
+import { environment } from '../environments/environment';
+
+readonly apiService = environment.serviceUrl;
+
+readonly actions: PoPageDynamicTableActions = {
+  new: '/new',
+  edit: '/edit/:id',
+  remove: true,
+};
+
+readonly fields: PoPageDynamicTableField[] = [
+  { property: 'id', label: 'ID', key: true },
+  { property: 'nome', label: 'Nome' },
+  { property: 'descricao', label: 'Descrição' }
+];
+```
+
+### EditPageComponent
+
+```ts
+import { PoPageDynamicEditActions, PoPageDynamicEditField } from '@po-ui/ng-templates';
+import { environment } from '../environments/environment';
+
+readonly apiService = environment.serviceUrl;
+
+readonly fields: PoPageDynamicEditField[] = [
+  { property: 'id', label: 'ID', key: true, visible: false },
+  { property: 'nome', label: 'Nome' },
+  { property: 'descricao', label: 'Descrição' }
+];
+
+readonly actions: PoPageDynamicEditActions = {
+  save: '/table',
+  saveNew: '/new'
+};
+```
+
+---
+
+## 6. Configuração do ambiente
+
+```ts
+// src/environments/environment.ts
+export const environment = {
+  production: false,
+  serviceUrl: 'http://localhost:3000/api/minha-entidade'
+};
+```
+
+---
+
+## 7. Executar a aplicação
+
+```bash
+# Iniciar frontend Angular
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Depois, acesse `http://localhost:4200` e navegue até a rota `/table`.
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 8. Pontos extras
 
-```bash
-ng generate component component-name
-```
+- Adicionar mais componentes do PO‑UI (charts, datepickers, layouts, etc.)
+- Estilização com temas personalizados
+- Integração com testes unitários e end-to-end
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## 📚 Referências
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Guia PO‑UI: https://po-ui.io/guides/getting-started

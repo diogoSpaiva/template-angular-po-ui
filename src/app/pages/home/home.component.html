@@ -1,0 +1,8 @@
+<div class="po-row">
+  @for (item of infoList; track $index) {
+    <po-widget class="po-lg-12 po-p-5" p-primary-label="Documentação"
+      (p-primary-action)="openLink(item.urlPath)">
+      <po-info [p-label]="item.label" [p-value]="item.value"> </po-info>
+    </po-widget>
+  }
+</div>
