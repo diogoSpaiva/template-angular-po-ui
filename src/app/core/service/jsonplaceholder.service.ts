@@ -8,7 +8,7 @@ const API = 'https://jsonplaceholder.typicode.com';
   providedIn: 'root',
 })
 export class JsonplaceholderService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // --- USERS ---
   getUsers(): Observable<any[]> {
@@ -32,8 +32,12 @@ export class JsonplaceholderService {
   }
 
   // --- POSTS ---
-  getPosts(): Observable<any[]> {
-    return this.http.get<any[]>(`${API}/posts`);
+  getPosts(userId?: number): Observable<any[]> {
+    let params = {};
+    if (userId) {
+      params = { userId: userId.toString() };
+    }
+    return this.http.get<any[]>(`${API}/posts`, { params });
   }
 
   getPost(id: number): Observable<any> {

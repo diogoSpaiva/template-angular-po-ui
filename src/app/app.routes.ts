@@ -22,6 +22,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/posts/posts.component').then(c => c.PostsComponent),
   },
+  {
+    path: 'posts/:userId',
+    loadComponent: () =>
+      import('./pages/posts/posts.component').then(c => c.PostsComponent),
+  },
   //{
   //  path: 'posts',
   //  component: PoPageDynamicTableComponent,

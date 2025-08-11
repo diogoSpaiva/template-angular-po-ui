@@ -1,19 +1,15 @@
-<po-breadcrumb
-  [p-items]="[
+<po-breadcrumb [p-items]="[
     { label: 'Home', link: '/' },
     { label: 'Usuários', link: 'breadcrumb' }
-  ]"
->
+  ]">
 </po-breadcrumb>
 
-<po-table
-  [p-auto-collapse]="true"
-  [p-columns]="columns"
-  [p-hide-columns-manager]="true"
-  [p-hide-table-search]="false"
-  [p-items]="items"
-  [p-height]="300"
-  [p-striped]="true"
-  p-spacing="large"
->
+<po-table p-container="shadow" [p-hide-columns-manager]="true" [p-loading-show-more]="isLoading" [p-columns]="columns"
+  [p-items]="items" [p-sort]="true">
+
+  <ng-template p-table-column-template [p-property]="action" let-value>
+    <po-button p-icon="an an-chat-centered-text" p-kind="tertiary" (p-click)="goToPosts(value)"> </po-button>
+    <po-button p-icon="an an-note-pencil" p-kind="tertiary" (p-click)="goToDocumentation(value)"> </po-button>
+  </ng-template>
+
 </po-table>

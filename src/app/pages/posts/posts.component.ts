@@ -1,33 +1,41 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { PoBreadcrumbModule, PoTableColumn, PoTableModule } from '@po-ui/ng-components';
 import { JsonplaceholderService } from '../../core/service/jsonplaceholder.service';
 
 @Component({
   selector: 'app-posts',
+  standalone: true,
   imports: [
     PoTableModule,
     PoBreadcrumbModule,
   ],
   templateUrl: './posts.component.html',
-  styleUrl: './posts.component.scss'
+  styleUrls: ['./posts.component.scss']
 })
 export class PostsComponent implements OnInit {
   columns: Array<PoTableColumn> = [
     { property: 'id', label: '#' },
     { property: 'title', label: 'Título' },
+    { property: 'userId', label: 'Usuário' },
   ];
   items!: Array<any>;
 
-  constructor(private transportService: JsonplaceholderService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private transportService: JsonplaceholderService
+  ) { }
 
   ngOnInit() {
-    this.getPosts();
+    this.route.queryParamMap.subscribe(params => {
+      const userId = params.get('userId');
+      this.getPosts(userId ? +userId : undefined);
+    });
   }
 
-  getPosts() {
-    this.transportService.getPosts().subscribe((resp: any) => {
-      console.log(resp);
-      this.items = resp
+  getPosts(userId?: number) {
+    this.transportService.getPosts(userId).subscribe((resp: any) => {
+      this.items = resp;
     });
   }
 }
