@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -33,11 +33,9 @@ export class JsonplaceholderService {
 
   // --- POSTS ---
   getPosts(userId?: number): Observable<any[]> {
-    let params = {};
-    if (userId) {
-      params = { userId: userId.toString() };
-    }
-    return this.http.get<any[]>(`${API}/posts`, { params });
+    return this.http.get<any[]>(`${API}/posts`, {
+      params: userId ? new HttpParams().set('userId', userId) : undefined
+    });
   }
 
   getPost(id: number): Observable<any> {
@@ -54,5 +52,11 @@ export class JsonplaceholderService {
 
   deletePost(id: number): Observable<any> {
     return this.http.delete<any>(`${API}/posts/${id}`);
+  }
+
+  // --- TODOs ---
+  getTodos(userIds?: number[]): Observable<any[]> {
+    const params = userIds?.length ? new HttpParams({ fromObject: { userId: userIds.map(String) } }) : undefined;
+    return this.http.get<any[]>(`${API}/todos`, { params });
   }
 }

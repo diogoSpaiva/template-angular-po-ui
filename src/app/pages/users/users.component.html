@@ -4,12 +4,25 @@
   ]">
 </po-breadcrumb>
 
-<po-table p-container="shadow" [p-hide-columns-manager]="true" [p-loading-show-more]="isLoading" [p-columns]="columns"
-  [p-items]="items" [p-sort]="true">
+<po-table p-container="shadow" [p-height]="300" [p-selectable]="true" (p-selected)="changeOptions($event, true)"
+  (p-unselected)="changeOptions($event, false)" [p-hide-columns-manager]="true" [p-loading-show-more]="isLoading"
+  [p-columns]="columns" [p-items]="items" [p-sort]="true">
 
   <ng-template p-table-column-template [p-property]="action" let-value>
     <po-button p-icon="an an-chat-centered-text" p-kind="tertiary" (p-click)="goToPosts(value)"> </po-button>
     <po-button p-icon="an an-note-pencil" p-kind="tertiary" (p-click)="goToDocumentation(value)"> </po-button>
   </ng-template>
 
+</po-table>
+
+<hr class="po-mt-4" />
+
+<div class="po-font-text-bold po-text-color-neutral-dark-40">Lista de atividades do usuário selecionado acima</div>
+
+<po-table p-container="shadow" [p-height]="500" [p-hide-columns-manager]="true" [p-loading-show-more]="isLoading"
+  [p-columns]="columnsTodos" [p-items]="itemsTodos" [p-sort]="true">
+  <ng-template p-table-column-template [p-property]="'completed'" let-value>
+    <po-tag [p-value]="value ? 'Feito' : 'Pendente'" [p-type]="value ? PoTagType.Success : PoTagType.Warning">
+    </po-tag>
+  </ng-template>
 </po-table>
